@@ -2,6 +2,7 @@
 
 ## General
 
+* Add JMX gauges for monitoring query admission state: `WaitingQueryCount` and `LongestWaitingQueryDurationSeconds` under `trino.execution:name=AdmissionStateMonitor`. ({issue}`29598`)
 * Add support for casting `boolean` to `number`. ({issue}`28879`)
 * Add support for the `number` type in Python UDFs. ({issue}`28921`)
 * Add support for casting between `number` and `json`. ({issue}`28394`)

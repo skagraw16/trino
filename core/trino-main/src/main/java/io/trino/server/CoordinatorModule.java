@@ -45,6 +45,7 @@ import io.trino.dispatcher.QueuedStatementResource;
 import io.trino.event.QueryMonitor;
 import io.trino.event.QueryMonitorConfig;
 import io.trino.exchange.ExchangeMetricsCollector;
+import io.trino.execution.AdmissionStateMonitor;
 import io.trino.execution.ClusterSizeMonitor;
 import io.trino.execution.DynamicFiltersCollector.VersionedDynamicFilterDomains;
 import io.trino.execution.ExecutionFailureInfo;
@@ -203,6 +204,8 @@ public class CoordinatorModule
         newExporter(binder).export(QueryManager.class).as(generator -> generator.generatedNameOf(QueryManager.class)
                 // For backward compatibility
                 .replaceFirst("QueryManager", "SqlQueryManager"));
+        binder.bind(AdmissionStateMonitor.class).in(Scopes.SINGLETON);
+        newExporter(binder).export(AdmissionStateMonitor.class).withGeneratedName();
         binder.bind(QueryPreparer.class).in(Scopes.SINGLETON);
         OptionalBinder.newOptionalBinder(binder, SessionSupplier.class).setDefault().to(QuerySessionSupplier.class).in(Scopes.SINGLETON);
         binder.bind(ResourceGroupInfoProvider.class).to(ResourceGroupManager.class).in(Scopes.SINGLETON);
