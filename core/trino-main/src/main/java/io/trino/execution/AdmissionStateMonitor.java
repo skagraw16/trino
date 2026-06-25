@@ -14,39 +14,36 @@
 package io.trino.execution;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Ticker;
 import com.google.inject.Inject;
 import io.trino.server.BasicQueryInfo;
 import org.weakref.jmx.Managed;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import static java.util.Objects.requireNonNull;
 
 public class AdmissionStateMonitor
 {
-    private final QueryManager queryManager;
-    private final Ticker ticker;
+    private final Supplier<List<BasicQueryInfo>> queryInfoSupplier;
 
     @Inject
     public AdmissionStateMonitor(QueryManager queryManager)
     {
-        this(queryManager, Ticker.systemTicker());
+        this(requireNonNull(queryManager, "queryManager is null")::getQueries);
     }
 
     @VisibleForTesting
-    AdmissionStateMonitor(QueryManager queryManager, Ticker ticker)
+    AdmissionStateMonitor(Supplier<List<BasicQueryInfo>> queryInfoSupplier)
     {
-        this.queryManager = requireNonNull(queryManager, "queryManager is null");
-        this.ticker = requireNonNull(ticker, "ticker is null");
+        this.queryInfoSupplier = requireNonNull(queryInfoSupplier, "queryInfoSupplier is null");
     }
 
     @Managed
     public int getWaitingQueryCount()
     {
-        List<BasicQueryInfo> queries = queryManager.getQueries();
         int count = 0;
-        for (BasicQueryInfo query : queries) {
+        for (BasicQueryInfo query : queryInfoSupplier.get()) {
             if (query.getState() == QueryState.WAITING_FOR_RESOURCES) {
                 count++;
             }
@@ -57,9 +54,8 @@ public class AdmissionStateMonitor
     @Managed
     public double getLongestWaitingQueryDurationSeconds()
     {
-        List<BasicQueryInfo> queries = queryManager.getQueries();
         long maxMillis = 0;
-        for (BasicQueryInfo query : queries) {
+        for (BasicQueryInfo query : queryInfoSupplier.get()) {
             if (query.getState() == QueryState.WAITING_FOR_RESOURCES) {
                 long millis = query.getQueryStats().getResourceWaitingTime().toMillis();
                 if (millis > maxMillis) {
