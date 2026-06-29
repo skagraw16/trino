@@ -184,7 +184,7 @@
         <air.test.jvm.additional-arguments>${air.test.jvm.additional-arguments.default}</air.test.jvm.additional-arguments>
 
         <!-- keep dependency properties sorted -->
-        <dep.airlift.version>435</dep.airlift.version>
+        <dep.airlift.version>436</dep.airlift.version>
         <dep.alluxio.version>2.9.6</dep.alluxio.version>
         <dep.antlr.version>4.13.2</dep.antlr.version>
         <dep.avro.version>1.12.1</dep.avro.version>
@@ -195,7 +195,7 @@
         <dep.frontend-maven-plugin.version>2.0.1</dep.frontend-maven-plugin.version>
         <dep.frontend-node.version>v24.12.0</dep.frontend-node.version>
         <dep.frontend-npm.version>11.7.0</dep.frontend-npm.version>
-        <dep.httpcore5.version>5.4.2</dep.httpcore5.version>
+        <dep.httpcore5.version>5.4.3</dep.httpcore5.version>
         <dep.iceberg.version>1.11.0</dep.iceberg.version>
         <dep.jna.version>5.19.1</dep.jna.version>
         <dep.jsonwebtoken.version>0.13.0</dep.jsonwebtoken.version>
